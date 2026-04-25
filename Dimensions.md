@@ -1,6 +1,6 @@
-#Dimensions
+# Dimensions
 
-##Note: All Dimensions to be in mm
+## Note: All Dimensions to be in mm
 
 | Component           | Length | Width | Height | Notes          |
 |---------------------|--------|-------|--------|----------------|
