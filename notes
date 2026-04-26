@@ -1,0 +1,42 @@
+BRAIN
+OM
+Module on the UNO side and the PI side which is basically the engine.py and engine.cpp of the whole system. DONE
+
+CAMERA 
+OM
+TANISHK MALGE 
+Module which can take camera input and output the data of any detected ceiling marker in the camera input and localise the robot in the given map according to the ceiling marker and the orientation of the robot with respect to the ceiling marker according to the camera input [Python]
+Module that can generate a ceiling marker with a given data [TANISHK]
+
+MOTOR 
+Viraj
+Manav
+Raj
+Module on UNO which can handle all motor movements according to serial commands from PI [C++]
+Module on PI which abstracts all motor movements and sends serial commands to the UNO [Python] DONE
+
+BATTERY
+OJ
+Siddhant
+
+CHASSI
+VIRAJ
+RAJ
+
+DISPLAY/APP
+OK
+Parth
+Siddhant
+Module to display all the stuff [PARTH] [C++] [Raylib]
+
+TOF/US
+VEDANT
+MANAV
+TANISHK
+Module on UNO which can GET all TOF readings
+Module on PI which can RECIEVE all TOF readings and resolve any possible collisions DONE
+
+BODY AND DOORS
+Parth
+OJ
+Vedant
