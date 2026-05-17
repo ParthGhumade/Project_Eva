@@ -1,3 +1,4 @@
+import time
 import heapq
 import sys
 import math
@@ -62,6 +63,18 @@ def searchAlgo(adj, src, target):
 
 	return path[::-1]
 
+def move(m1, m2):
+	if m2 == -1:
+		engine.stop()
+	else:
+		mark1, mark2 = floorMap[m1], floorMap[m2]
+		# consider direction the robot is facing currently (fetched from current pos aruco)
+		engine.moveForward(100)
+		t_init = time.time()
+		while time.time() - t_init < 5 and vision.getLatestMarker()[0] != m2:
+			pass
+		engine.stop()
+
 def goToDestination(room):
 	# i am thinking of a graph to act as a floor-map for navigation
 	# it will use djikstra's to get the shortest path in the graph and then to go to the next node (marker) the robot will try to face in that marker's direction and then move forward until it reaches there
@@ -69,15 +82,30 @@ def goToDestination(room):
 	(marker, direction) = vision.getLatestMarker()
 	path = searchAlgo(floorMapIndexed, marker, 13) # hardcoded for now to test
 
+	t_init = time.time()
 	reached = False
 	while not reached:
-		# yet to complete this part
+		if time.time() - t_init > 10:
+			break
+		marker = vision.getLatestMarker()
+		if marker[0] == path[-1]:
+			reached = True
+		
+		if not marker[0] in path:
+			goToDestination(room)
+			break
 
+		counter = 0
+		next = -1
+		for i in path:
+			if i == marker[0]:
+				next = path[counter + 1]
+			counter += 1
 
-
-
-
-
+		move(marker[0], next)
+	
+	engine.stop()
+		
 
 def navigate(room):
 	# goToLift()
@@ -87,6 +115,7 @@ def navigate(room):
 	# wait()
 	# goOutsideLift()
 	goToDestination(room)
+	engine.stop()
 	# faceDoor()
 
 # while True:
