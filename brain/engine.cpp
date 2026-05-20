@@ -1,28 +1,34 @@
 #include <Arduino.h>
 
 //
-const int IN1=2;
-const int IN2=3;
-const int ENA=5;
+// const int IN1=2;
+// const int IN2=3;
+// const int ENA=5;
 
-const int IN3=4;
-const int IN4=7;
-const int ENB=6;
+// const int IN3=4;
+// const int IN4=7;
+// const int ENB=6;
+//
+
+//
+#define L1 5
+#define R1 6
+
+#define L2 9
+#define R2 10
 //
 
 class Robot {
 public:
-	void begin() {
+	void setup() {
 		Serial.begin(115200);
 
 		//
-		pinMode(IN1, OUTPUT);
-		pinMode(IN2, OUTPUT);
-		pinMode(ENA, OUTPUT);
+		pinMode(L1, OUTPUT);
+		pinMode(R1, OUTPUT);
 
-		pinMode(IN3, OUTPUT);
-		pinMode(IN4, OUTPUT);
-		pinMode(ENB, OUTPUT);
+		pinMode(L2, OUTPUT);
+		pinMode(R2, OUTPUT);
 		//
 
 		Serial.println("OK");
@@ -38,6 +44,14 @@ public:
 		}
 	}
 
+	void stop() {
+		analogWrite(R1, 0);
+		analogWrite(L1, 0);
+		analogWrite(R2, 0);
+		analogWrite(L2, 0);
+		delay(1000);
+	}
+
 	void processCommand(String inp) {
 		char cmd_type = inp.charAt(0);
 
@@ -46,13 +60,9 @@ public:
 
 			// motor control logic
 			//
-			digitalWrite(IN1, HIGH);
-			digitalWrite(IN2, LOW);
-			digitalWrite(IN3, HIGH);
-			digitalWrite(IN4, LOW);
-
-			analogWrite(ENA, speed);
-			analogWrite(ENB, speed);
+			stop();
+			analogWrite(R1, speed);
+			analogWrite(L2, speed);
 			//
 
 			Serial.println("OK");
@@ -65,28 +75,19 @@ public:
 			// motor turn logic
 			//
 			if (direction == 1) {
-				digitalWrite(IN1, HIGH);
-				digitalWrite(IN2, LOW);
-				digitalWrite(IN3, LOW);
-				digitalWrite(IN4, HIGH);
-
-				analogWrite(ENA, speed);
-				analogWrite(ENB, speed);
+				stop();
+				analogWrite(R1, speed);
+				analogWrite(R2, speed);
 			} 
 			else if (direction == 0) {
-				digitalWrite(IN1, LOW);
-				digitalWrite(IN2, HIGH);
-				digitalWrite(IN3, HIGH);
-				digitalWrite(IN4, LOW);
-
-				analogWrite(ENA, speed);
-				analogWrite(ENB, speed);
+				stop();
+				analogWrite(L1, speed);
+				analogWrite(L2, speed);
 			}
 
 			delay(duration);
 
-			digitalWrite(ENA, LOW);
-			digitalWrite(ENB, LOW);
+			stop();
 			//
 
 			Serial.println("OK");
@@ -94,12 +95,7 @@ public:
 			
 			// motor stop logic
 			//
-			digitalWrite(IN1, LOW);
-			digitalWrite(IN2, LOW);
-			digitalWrite(IN3, LOW);
-			digitalWrite(IN4, LOW);
-			digitalWrite(ENA, LOW);
-			digitalWrite(ENB, LOW);
+			stop();
 			//
 
 		} else if (cmd_type == 'C') {
